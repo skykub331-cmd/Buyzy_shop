@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>โปรไฟล์ร้าน - Buyzy</title>
+  <style>
+    body {
+      margin:0;
+      background:#0f0f0f;
+      font-family:sans-serif;
+      color:#fff;
+    }
+
+    /* TOP NAV */
+    .topnav {
+      width:100%;
+      background:#1a1a1a;
+      padding:12px 25px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid #222;
+      position:fixed;
+      top:0;
+      left:0;
+      z-index:10;
+    }
+    .nav-left {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .nav-left img {width:38px; height:38px; border-radius:6px;}
+    .nav-left h2 {margin:0; font-size:22px; letter-spacing:1px;}
+    .nav-links {display:flex; gap:25px;}
+    .nav-links a {color:#ccc; text-decoration:none; font-size:16px; transition:0.2s;}
+    .nav-links a:hover {color:#ff8a3d;}
+
+    /* LAYOUT */
+    .container {
+      display:flex;
+      min-height:100vh;
+      padding-top:70px;
+      flex-wrap:wrap; /* for responsiveness */
+    }
+    .sidebar {
+      width:250px;
+      background:#111;
+      padding:20px;
+      flex-shrink:0;
+    }
+    .sidebar ul {list-style:none; padding:0; margin-top:20px;}
+    .sidebar li {
+      padding:12px 0;
+      opacity:0.7;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .sidebar li:hover {color:#ff8a3d; opacity:1;}
+    .sidebar li.active {color:#ff8a3d; opacity:1;}
+
+    .content {
+      flex:1;
+      padding:40px;
+      min-width:0;
+    }
+
+    /* CARD */
+    .card {
+      background:#1a1a1a;
+      padding:20px;
+      border-radius:10px;
+      margin-bottom:20px;
+    }
+
+    /* BUTTONS */
+    button {
+      background:#ff8a3d;
+      border:none;
+      padding:12px 20px;
+      border-radius:8px;
+      cursor:pointer;
+      color:#fff;
+      font-size:16px;
+      transition:0.2s;
+      margin-top:10px;
+    }
+    button:hover {background:#e5782f;}
+
+    /* FORM */
+    .profile-form {
+      display:flex;
+      flex-direction:column;
+      gap:15px;
+    }
+    input, textarea {
+      padding:10px;
+      border-radius:6px;
+      border:none;
+      background:#1a1a1a;
+      color:#fff;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .container {flex-direction:column;}
+      .sidebar {width:100%; display:flex; overflow-x:auto;}
+      .sidebar ul {display:flex; gap:15px;}
+      .sidebar li {white-space:nowrap;}
+      .content {padding:20px;}
+    }
+
+    @media(max-width:500px){
+      .topnav {flex-direction:column; align-items:flex-start; gap:10px;}
+      .nav-links {flex-wrap:wrap;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-left">
+    <img src="static/buyzyshop.png" alt="Buyzy Logo">
+    <h2>Buyzy</h2>
+  </div>
+  <div class="nav-links">
+    <a href="#">หน้าหลัก</a>
+    <a href="#">สินค้า</a>
+    <a href="#">ออเดอร์</a>
+    <a href="#">โปรไฟล์</a>
+    <a href="#">ออกจากระบบ</a>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+    <ul>
+      <li onclick="goPage(this,'/manage_products')">จัดการสินค้า</li>
+      <li onclick="goPage(this,'/orders')">ออเดอร์ของร้าน</li>
+      <li onclick="goPage(this,'/sales_today')">ยอดขายวันนี้</li>
+      <li onclick="goPage(this,'/shipping_info')">ข้อมูลจัดส่ง</li>
+      <li class="active" onclick="goPage(this,'/shop_profile')">จัดการโปรไฟล์ร้าน</li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>จัดการโปรไฟล์ร้าน</h1>
+    <div class="card">
+      <form class="profile-form">
+        <input type="text" placeholder="ชื่อร้าน">
+        <input type="text" placeholder="อีเมล">
+        <textarea rows="4" placeholder="คำอธิบายร้าน"></textarea>
+        <button type="button" onclick="alert('บันทึกโปรไฟล์เรียบร้อย!')">บันทึกข้อมูล</button>
+      </form>
+    </div>
+  </main>
+</div>
+
+<script>
+function goPage(element,page){
+  document.querySelectorAll('.sidebar li').forEach(li=>li.classList.remove('active'));
+  element.classList.add('active');
+  window.location.href=page;
+}
+</script>
+
+</body>
+</html>
+

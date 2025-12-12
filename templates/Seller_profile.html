@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buyzy Seller Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      font-family: sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #111;
+      padding: 20px;
+    }
+
+    .logo {
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      padding: 12px 0;
+      opacity: 0.7;
+      cursor: pointer;
+    }
+
+    .sidebar li.active {
+      color: #ff8a3d;
+      opacity: 1;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      width: 200px;
+    }
+
+    .actions {
+      margin-top: 40px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: #ff8a3d;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #e5782f;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <aside class="sidebar">
+    <h2 class="logo">Buyzy</h2>
+
+    <ul>
+      <li class="active">จัดการสินค้า</li>
+      <li>ออเดอร์ของร้าน</li>
+      <li>ยอดขายวันนี้</li>
+      <li>ข้อมูลจัดส่ง</li>
+      <li>จัดการโปรไฟล์ร้าน</li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>ยินดีต้อนรับสู่ระบบผู้ขาย Buyzy</h1>
+
+    <div class="stats">
+      <div class="card">
+        <p>ออเดอร์ใหม่</p>
+        <h2 id="orderCount">2</h2>
+      </div>
+
+      <div class="card">
+        <p>สินค้าทั้งหมด</p>
+        <h2 id="totalProduct">12</h2>
+      </div>
+
+      <div class="card">
+        <p>รายได้วันนี้</p>
+        <h2 id="incomeToday">350 บาท</h2>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="addFirstProduct">เพิ่มสินค้าแรกของคุณ</button>
+      <button id="goOrder">ไปยังออเดอร์</button>
+      <button id="editOrder">แก้ไขออเดอร์</button>
+      <button id="editProfile">แก้ไขโปรไฟล์ร้าน</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  // ดึง element (ชื่อถูก: getElementById)
+  const orderCount = document.getElementById("orderCount");
+  const totalProduct = document.getElementById("totalProduct");
+  const incomeToday = document.getElementById("incomeToday");
+
+  // ปุ่มใช้งานได้จริง
+  document.getElementById("addFirstProduct").addEventListener("click", () => {
+    alert("เพิ่มสินค้าใหม่แล้วนะ!");
+    totalProduct.textContent = Number(totalProduct.textContent) + 1;
+  });
+
+  document.getElementById("goOrder").addEventListener("click", () => {
+    alert("ไปยังหน้าออเดอร์!");
+  });
+
+  document.getElementById("editOrder").addEventListener("click", () => {
+    alert("เปิดหน้าแก้ไขออเดอร์!");
+  });
+
+  document.getElementById("editProfile").addEventListener("click", () => {
+    alert("เปิดหน้าแก้ไขโปรไฟล์ร้าน!");
+  });
+</script>
+
+</body>
+</html>

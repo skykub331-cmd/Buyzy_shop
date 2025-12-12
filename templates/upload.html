@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyzy - สมัครผู้ขาย TikTok Shop</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ff6f00;
+            --secondary-color: #17a2b8;
+            --dark-bg: #1a1a1a;
+            --text-light: #ffffff;
+            --text-dark: #333;
+            --card-bg: #282828;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: #000;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .auth-buttons a {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: opacity 0.3s;
+        }
+
+        .signin-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        .signin-btn:hover { opacity: 0.8; }
+
+        .signup-btn {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        .signup-btn:hover { background-color: #ff8833; }
+
+        .form-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #ffb06a;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            background: #1f1f1f;
+            color: var(--text-light);
+            font-size: 1em;
+        }
+
+        input[type="file"] {
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #ff8833;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            background-color: #000;
+            color: #aaa;
+            border-top: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="/static/Gemini_Generated_Image_g7bjwwg7bjwwg7bj.png" class="logo-img" style="height:40px;margin-right:10px;">
+        <h1>Buyzy</h1>
+    </div>
+     <nav class="nav-links">
+        <a href="/">หน้าแรก</a>
+        <a href="/products">สินค้า</a>
+        <a href="/promo">โปรโมชั่น</a>
+        <a href="/contact">ติดต่อเรา</a>
+    </nav>
+
+    <div class="auth-buttons">
+        <a class="signin-btn" href="/signin">Sign In</a>
+        <a class="signup-btn" href="/signup">Sign Up</a>
+    </div>
+</header>
+
+<div class="form-container">
+    <h2 style="text-align:center;margin-bottom:20px;color:#ff6f00;">สมัครผู้ขาย</h2>
+
+    <!-- Registration Form -->
+    <form id="registerForm">
+
+        <!-- NEW INPUTS YOU REQUESTED -->
+        <div class="form-group">
+            <label for="shop_name">ชื่อร้าน</label>
+            <input type="text" id="shop_name" name="shop_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="seller_type">ประเภทผู้ขาย</label>
+            <select id="seller_type" name="seller_type" required></select>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">เบอร์โทรศัพท์</label>
+            <input type="text" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">อีเมล</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tax_id">เลขบัตรประชาชน / เลขผู้เสียภาษี</label>
+            <input type="text" id="tax_id" name="tax_id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">ที่อยู่ร้านค้า</label>
+            <textarea id="address" name="address" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="bank_account">เลขบัญชีธนาคาร</label>
+            <input type="text" id="bank_account" name="bank_account" required>
+        </div>
+        
+        <button type="submit" class="submit-btn">สมัคร</button>
+    </form>
+
+    <hr style="margin:30px 0; border-color:#444;">
+
+    <!-- BASIC FILE UPLOAD (UNTOUCHED) -->
+    <label>อัพโหลดเอกสารยืนยันตัวตน</label>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" required>
+        <button type="submit" style="padding:10px 20px;margin-top:10px;">Upload</button>
+    </form>
+
+    <p id="result" style="margin-top:10px;"></p>
+
+</div>
+
+<script>
+    // Generate seller_type options programmatically
+    const sellerSelect = document.getElementById("seller_type");
+    const types = [
+        { value: "individual", label: "บุคคลธรรมดา" },
+        { value: "company", label: "นิติบุคคล" },
+        { value: "corporate", label: "Corporate" }
+    ];
+
+    types.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.value;
+        opt.textContent = t.label;
+        if (t.value === "individual") opt.selected = true;
+        sellerSelect.appendChild(opt);
+    });
+
+    // Log default
+    window.onload = () => {
+        console.log("Default selected:", sellerSelect.value);
+    };
+
+    // Log on change
+    sellerSelect.addEventListener("change", () => {
+        console.log("Selected:", sellerSelect.value);
+    });
+
+    // FILE UPLOAD (unchanged)
+    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        let fileInput = document.getElementById("fileInput");
+        let formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        let res = await fetch("http://127.0.0.1:8000/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        let data = await res.json();
+        document.getElementById("result").innerText = JSON.stringify(data);
+    });
+</script>
+
+</body>
+</html>

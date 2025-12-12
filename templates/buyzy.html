@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyzy - ร้านค้าอิเล็กทรอนิกส์ที่ดีที่สุด (Dynamic)</title>
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ff6f00;
+            --secondary-color: #17a2b8;
+            --dark-bg: #1a1a1a;
+            --text-light: #ffffff;
+            --text-dark: #333;
+            --card-bg: #282828;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: #000;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        /* ส่วนของลิงก์หลักใน Navbar */
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* ส่วนของปุ่มเข้าสู่ระบบ/สมัครสมาชิก */
+     .auth-buttons a {
+    padding: 8px 15px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.3s;
+}
+
+/* Sign In */
+.signin-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.signin-btn:hover {
+    opacity: 0.8;
+}
+
+/* Sign Up */
+.signup-btn {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.signup-btn:hover {
+    background-color: #ff8833;
+}
+        /* --- Main Content & Product Grid --- */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* --- Product Card Styling --- */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 1px solid var(--dark-bg);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 102, 0, 0.2);
+            border: 1px solid var(--primary-color);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #333;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            height: 3em;
+            overflow: hidden;
+        }
+
+        .price-section {
+            margin: 10px 0;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .current-price {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-bottom-left-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: #bbb;
+            margin-top: 10px;
+        }
+
+        .popularity span, .stock-count span {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .add-to-cart {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #ff8833;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            border-top: 1px solid #333;
+            background-color: #000;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="static/buyzyshop.png" alt="Buyzy Logo" class="logo-img">
+            <h1>Buyzy</h1>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="#">หน้าแรก</a>
+            <a href="#">สินค้า</a>
+            <a href="#">โปรโมชั่น</a>
+            <a href="#">ติดต่อเรา</a>
+        </nav>
+        
+        <div class="auth-buttons">
+              <a class="signin-btn" href="/signin">Sign In</a>
+              <a class="signup-btn" href="/signup">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>🔥 สินค้ายอดนิยมประจำสัปดาห์</h2>
+        <div id="product-list" class="product-grid">
+            </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Buyzy. สงวนลิขสิทธิ์</p>
+    </footer>
+
+    <script>
+        /**
+         * 📦 โครงสร้างข้อมูล JSON สำหรับสินค้า
+         * (นี่คือส่วนที่คุณสามารถเปลี่ยนข้อมูลสินค้าได้ง่ายๆ)
+         */
+        // POST
+
+
+ //const productJsonData = productJsonDatas['Total_products']; 
+ //console.log('Display product: ',productJsonDatas);
+        /**
+         * ฟังก์ชันสำหรับสร้างการ์ดสินค้าจากโครงสร้าง JSON
+         * @param {object} product - ข้อมูลสินค้าจาก Array ใน JSON
+         * @returns {string} - HTML string ของการ์ดสินค้า
+         */
+        function createProductCard(product) {
+            // ใช้ชื่อตัวแปรให้ตรงกับ key ใน JSON
+            const { 
+                name, 
+                price, 
+                original_price, 
+                discount_percent, 
+                popularity_rating, 
+                stock_quantity, 
+                image_url 
+            } = product;
+
+            // การแปลงราคาให้อยู่ในรูปแบบสกุลเงินไทย
+            const currentPriceFormatted = price.toLocaleString('th-TH', { style: 'currency', currency: 'THB' });
+            const originalPriceFormatted = original_price ? original_price.toLocaleString('th-TH', { style: 'currency', currency: 'THB' }) : '';
+            
+            // สร้าง HTML สำหรับการ์ดสินค้า (Card Board)
+            return `
+                <div class="product-card">
+                    ${discount_percent > 0 ? `<div class="discount-badge">ลด ${discount_percent}%</div>` : ''}
+                    <img src="${image_url}" alt="${name}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">${name}</div>
+                        
+                        <div class="price-section">
+                            <span class="current-price">${currentPriceFormatted}</span>
+                            ${original_price && discount_percent > 0 ? `<span class="original-price">${originalPriceFormatted}</span>` : ''}
+                        </div>
+
+                        <div class="details-row">
+                            <div class="popularity">
+                                ความนิยม: <span>⭐ ${popularity_rating.toFixed(1)}</span>
+                            </div>
+                            <div class="stock-count">
+                                เหลือ: <span>${stock_quantity} ชิ้น</span>
+                            </div>
+                        </div>
+
+                        <button class="add-to-cart">🛒 ซื้อเลย</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * ฟังก์ชันหลักในการแสดงรายการสินค้า
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/database', {
+
+    // Declare what type of data we're sending
+    headers: {
+      'Content-Type': 'application/json'
+    },
+
+    // Specify the method
+    method: 'POST',
+
+    // A JSON payload
+    body: JSON.stringify({
+        "endpoint": "database"
+    })
+}).then(function (response) { // At this point, Flask has printed our JSON
+  return response.text();
+}).then(function (text) {
+
+    console.log('POST response: ');
+
+    // Should be 'OK' if everything was successful
+   // console.log(text);
+   let productJsonData =   JSON.parse(text);
+   console.log("Json database: ",productJsonData); 
+   console.log("Checking",productJsonData);
+    
+
+            const productListElement = document.getElementById('product-list');
+            
+            // ดึง Array ของสินค้าจากโครงสร้าง JSON
+            const products = productJsonData.products;
+
+            // สร้าง HTML string ของการ์ดสินค้าทั้งหมด
+            const productCardsHTML = products.map(createProductCard).join('');
+
+            // แทรก HTML เข้าไปใน DOM
+            productListElement.innerHTML = productCardsHTML;
+
+            // ตัวอย่าง Event Listener สำหรับปุ่ม "ซื้อเลย" (ฟังก์ชันจำลอง)
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productName = event.target.closest('.product-card').querySelector('.product-name').textContent;
+                    alert(`เพิ่ม "${productName}" เข้าสู่ตะกร้าแล้ว (ฟังก์ชันจำลอง)`);
+                });
+            });
+        });
+        });
+    
+    </script>
+</body>
+</html>

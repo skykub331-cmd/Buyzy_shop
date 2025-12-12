@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+  <title>ยอดขายวันนี้ - Buyzy</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {margin:0; background:#0f0f0f; font-family:sans-serif; color:#fff;}
+    .topnav {width:100%; background:#1a1a1a; padding:12px 25px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; position:fixed; top:0; left:0; z-index:10;}
+    .nav-left {display:flex; align-items:center; gap:12px;}
+    .nav-left img {width:38px; height:38px; border-radius:6px;}
+    .nav-left h2 {margin:0; font-size:22px; letter-spacing:1px;}
+    .nav-links {display:flex; gap:25px;}
+    .nav-links a {color:#ccc; text-decoration:none; font-size:16px; transition:0.2s;}
+    .nav-links a:hover {color:#ff8a3d;}
+    .container {display:flex; height:100vh; padding-top:70px; flex-wrap:wrap;}
+    .sidebar {width:250px; background:#111; padding:20px; flex-shrink:0;}
+    .sidebar ul {list-style:none; padding:0; margin-top:20px;}
+    .sidebar li {padding:12px 0; opacity:0.7; cursor:pointer; transition:0.2s;}
+    .sidebar li:hover {color:#ff8a3d; opacity:1;}
+    .sidebar li.active {color:#ff8a3d; opacity:1;}
+    .content {flex:1; padding:40px; min-width:0;}
+    .card {background:#1a1a1a; padding:20px; border-radius:10px; margin-bottom:20px;}
+    #roiChart {background:#111; border-radius:10px; padding:20px;}
+    svg {width:100%; height:300px;}
+    @media(max-width:900px){.container{flex-direction:column;}.sidebar{width:100%; display:flex; overflow-x:auto;}.sidebar ul{display:flex; gap:15px;}.sidebar li{white-space:nowrap;}.content{padding:20px;}}
+  </style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-left">
+    <img src="static/buyzyshop.png" alt="Buyzy Logo">
+    <h2>Buyzy</h2>
+  </div>
+  <div class="nav-links">
+    <a href="#">หน้าหลัก</a>
+    <a href="#">สินค้า</a>
+    <a href="#">ออเดอร์</a>
+    <a href="#">โปรไฟล์</a>
+    <a href="#">ออกจากระบบ</a>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+    <ul>
+      <li onclick="goPage(this,'/manage_products')">จัดการสินค้า</li>
+      <li onclick="goPage(this,'/orders')">ออเดอร์ของร้าน</li>
+      <li class="active" onclick="goPage(this,'/sales_today')">ยอดขายวันนี้</li>
+      <li onclick="goPage(this,'/shipping_info')">ข้อมูลจัดส่ง</li>
+      <li onclick="goPage(this,'/shop_profile')">จัดการโปรไฟล์ร้าน</li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>หน้า ยอดขายวันนี้</h1>
+
+    <div class="card">รายได้วันนี้: <span id="incomeToday">350 บาท</span></div>
+    <div class="card">รายได้รวม: <span id="incomeTotal">5,200 บาท</span></div>
+    <div class="card">ROI วันนี้: <span id="roiToday">0%</span></div>
+
+    <div class="card" id="roiChart">
+      <h3>กราฟ ROI (รายได้เรียลไทม์)</h3>
+      <svg></svg>
+    </div>
+  </main>
+</div>
+
+<script>
+function goPage(element,page){
+  document.querySelectorAll('.sidebar li').forEach(li=>li.classList.remove('active'));
+  element.classList.add('active');
+  window.location.href=page;
+}
+
+// ----------------- D3.js Real-Time ROI Graph -----------------
+const svg = d3.select("#roiChart svg");
+const margin = {top:20,right:20,bottom:30,left:50};
+const width = svg.node().getBoundingClientRect().width - margin.left - margin.right;
+const height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
+const g = svg.append("g").attr("transform",`translate(${margin.left},${margin.top})`);
+
+let data = [];
+const maxPoints = 20;
+
+const x = d3.scaleLinear().domain([0,maxPoints-1]).range([0,width]);
+const y = d3.scaleLinear().domain([0,100]).range([height,0]);
+
+const line = d3.line()
+  .x((d,i)=>x(i))
+  .y(d=>y(d));
+
+g.append("g").attr("class","x-axis").attr("transform",`translate(0,${height})`).call(d3.axisBottom(x).ticks(maxPoints));
+g.append("g").attr("class","y-axis").call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+"%"));
+
+const path = g.append("path")
+  .datum(data)
+  .attr("fill","none")
+  .attr("stroke","#ff8a3d")
+  .attr("stroke-width",2);
+
+function updateGraph() {
+  // simulate ROI %
+  const newROI = Math.floor(Math.random()*30); // 0-30%
+  data.push(newROI);
+  if(data.length>maxPoints) data.shift();
+
+  // update summary ROI
+  document.getElementById("roiToday").textContent = newROI + "%";
+
+  // dynamic y scale
+  y.domain([0,d3.max(data)+10]);
+  g.select(".y-axis").transition().duration(500).call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+"%"));
+
+  path.datum(data).attr("d", line);
+}
+
+// update every 2s
+setInterval(updateGraph,2000);
+</script>
+
+</body>
+</html>
+
+

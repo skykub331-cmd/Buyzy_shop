@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html> 
+    <title>Product data </title>
+    
+    <body>
+           <h2>product name </h2>
+           <input type="text" id="productname" values="{{name}}">
+           <h2>price </h2>
+           <input type="text" id="price" values="{{price}}">
+           <h2>original-price</h2>
+           <input type="text" id="org_price" values="{{org_price}}"> 
+           <h2>discount_percent</h2>
+           <input type="text" id="discount" values="{{discount}}">
+           <h2>popular </h2>
+           <input type="text" id="popular" values="{{popular}}">
+           <h2> stock_quantity</h2>
+           <input type="text" id="stock_quant" values="{{stock_quant}}">
+          
+           <button type="submit" onclick="submitdata();">Login </button>
+    </body>
+   <script>
+      function submitdata(){ 
+        const productname = document.getElementById("productname").value;
+        const price = document.getElementById("price").value;
+        const org_price = document.getElementById("org_price").value; 
+        const discount = document.getElementById("discount").value; 
+        const popular = document.getElementById("popular").value; 
+        const stock_quant = document.getElementById("stock_quant").value;  
+        console.log("productname : ",productname);
+        console.log("Price: ",price); 
+        console.log("Discount: ",discount); 
+        console.log("Popular: ",popular);
+        console.log("Stock_quantity: ",stock_quant); 
+        let data = {"payload":{"product_name":productname,"price":price,"discount":discount,"popular":popular,"stock_quantity":stock_quant}};
+        //Fetching bak-end data to end-point
+         fetch('/update_realdb', {
+
+    // Declare what type of data we're sending
+    headers: {
+      'Content-Type': 'application/json'
+    },
+
+    // Specify the method
+    method: 'POST',
+
+    // A JSON payload
+    body: JSON.stringify(data)
+}).then(function (response) { // At this point, Flask has printed our JSON
+  return response.text();
+}).then(function (text) {
+
+    console.log('POST response: ');
+    // Should be 'OK' if everything was successful
+   // console.log(text);
+   let productdata =   JSON.parse(text);
+   console.log("JSON login data: ", productdata);  
+});
+      };
+     
+   </script>
+
+</html>

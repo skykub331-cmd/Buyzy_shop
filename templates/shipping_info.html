@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+  <title>ข้อมูลจัดส่ง - Buyzy</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {margin:0; background:#0f0f0f; font-family:sans-serif; color:#fff;}
+    .topnav {width:100%; background:#1a1a1a; padding:12px 25px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; position:fixed; top:0; left:0; z-index:10;}
+    .nav-left {display:flex; align-items:center; gap:12px;}
+    .nav-left img {width:38px; height:38px; border-radius:6px;}
+    .nav-left h2 {margin:0; font-size:22px; letter-spacing:1px;}
+    .nav-links {display:flex; gap:25px;}
+    .nav-links a {color:#ccc; text-decoration:none; font-size:16px; transition:0.2s;}
+    .nav-links a:hover {color:#ff8a3d;}
+    .container {display:flex; height:100vh; padding-top:70px; flex-wrap:wrap;}
+    .sidebar {width:250px; background:#111; padding:20px; flex-shrink:0;}
+    .sidebar ul {list-style:none; padding:0; margin-top:20px;}
+    .sidebar li {padding:12px 0; opacity:0.7; cursor:pointer; transition:0.2s;}
+    .sidebar li:hover {color:#ff8a3d; opacity:1;}
+    .sidebar li.active {color:#ff8a3d; opacity:1;}
+    .content {flex:1; padding:40px; min-width:0;}
+    .card {background:#1a1a1a; padding:20px; border-radius:10px; margin-bottom:20px;}
+    #shippingGraph {background:#111; border-radius:10px; padding:20px;}
+    svg {width:100%; height:300px;}
+    @media(max-width:900px){.container{flex-direction:column;}.sidebar{width:100%; display:flex; overflow-x:auto;}.sidebar ul{display:flex; gap:15px;}.sidebar li{white-space:nowrap;}.content{padding:20px;}}
+  </style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-left">
+    <img src="static/buyzyshop.png" alt="Buyzy Logo">
+    <h2>Buyzy</h2>
+  </div>
+  <div class="nav-links">
+    <a href="#">หน้าหลัก</a>
+    <a href="#">สินค้า</a>
+    <a href="#">ออเดอร์</a>
+    <a href="#">โปรไฟล์</a>
+    <a href="#">ออกจากระบบ</a>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+    <ul>
+      <li onclick="goPage(this,'/manage_products')">จัดการสินค้า</li>
+      <li onclick="goPage(this,'/orders')">ออเดอร์ของร้าน</li>
+      <li onclick="goPage(this,'/sales_today')">ยอดขายวันนี้</li>
+      <li class="active" onclick="goPage(this,'/shipping_info')">ข้อมูลจัดส่ง</li>
+      <li onclick="goPage(this,'/shop_profile')">จัดการโปรไฟล์ร้าน</li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>ข้อมูลจัดส่งเรียลไทม์</h1>
+
+    <!-- Orders Summary -->
+    <div class="card">จัดส่งออเดอร์ #001: <span id="order001">รอดำเนินการ</span></div>
+    <div class="card">จัดส่งออเดอร์ #002: <span id="order002">รอดำเนินการ</span></div>
+
+    <!-- Shipping Graph -->
+    <div class="card" id="shippingGraph">
+      <h3>กราฟสถานะการจัดส่ง (เรียลไทม์)</h3>
+      <svg></svg>
+    </div>
+  </main>
+</div>
+
+<script>
+function goPage(element,page){
+  document.querySelectorAll('.sidebar li').forEach(li=>li.classList.remove('active'));
+  element.classList.add('active');
+  window.location.href=page;
+}
+
+// ----------------- D3.js Shipping Progress Graph -----------------
+const orders = [
+  {id:"001", status:0},
+  {id:"002", status:0},
+];
+
+const svg = d3.select("#shippingGraph svg");
+const margin = {top:30,right:30,bottom:30,left:50};
+const width = svg.node().getBoundingClientRect().width - margin.left - margin.right;
+const height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
+const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+const x = d3.scaleBand()
+  .domain(orders.map(d=>d.id))
+  .range([0,width])
+  .padding(0.3);
+
+const y = d3.scaleLinear()
+  .domain([0,100])
+  .range([height,0]);
+
+// Axes
+g.append("g")
+  .attr("class","x-axis")
+  .attr("transform",`translate(0,${height})`)
+  .call(d3.axisBottom(x));
+
+g.append("g")
+  .attr("class","y-axis")
+  .call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+"%"));
+
+// Bars
+const bars = g.selectAll(".bar")
+  .data(orders)
+  .enter()
+  .append("rect")
+  .attr("class","bar")
+  .attr("x",d=>x(d.id))
+  .attr("y",d=>y(d.status))
+  .attr("width",x.bandwidth())
+  .attr("height",d=>height - y(d.status))
+  .attr("fill","#ff8a3d");
+
+const labels = g.selectAll(".label")
+  .data(orders)
+  .enter()
+  .append("text")
+  .attr("x",d=>x(d.id)+x.bandwidth()/2)
+  .attr("y",d=>y(d.status)-5)
+  .attr("text-anchor","middle")
+  .attr("fill","#fff")
+  .text(d=>"0%");
+
+// Simulate shipping progress in real-time
+function updateShipping(){
+  orders.forEach(order=>{
+    if(order.status<100){
+      order.status += Math.floor(Math.random()*10); // progress increment
+      if(order.status>100) order.status=100;
+
+      // Update bar
+      bars.filter(d=>d.id===order.id)
+          .transition()
+          .duration(1000)
+          .attr("y",y(order.status))
+          .attr("height",height - y(order.status));
+
+      // Update label
+      labels.filter(d=>d.id===order.id)
+            .transition()
+            .duration(1000)
+            .attr("y",y(order.status)-5)
+            .text(order.status+"%");
+
+      // Update text status
+      const statusText = order.status<50 ? "รอดำเนินการ" : order.status<100 ? "กำลังจัดส่ง" : "จัดส่งสำเร็จ";
+      document.getElementById("order"+order.id).textContent = statusText;
+    }
+  });
+}
+
+// Update every 2 seconds
+setInterval(updateShipping,2000);
+</script>
+
+</body>
+</html>
+

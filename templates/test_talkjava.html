@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html> 
+    <title>Test java talking </title>
+    
+    <body>
+           <h2>Email: </h2>
+           <input type="text" id="email" values="{{email}}">
+           <h2> Password: </h2>
+           <input type="password" id="password" values="{{password}}">
+           <button typ="submit" onclick="submitdata();">Login </button>
+    </body>
+   <script>
+      function submitdata(){ 
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value; 
+        console.log("Email data: ",email);
+        console.log("Password data: ",password); 
+        //Fetching bak-end data to end-point
+         fetch('/send_endpoint', {
+
+    // Declare what type of data we're sending
+    headers: {
+      'Content-Type': 'application/json'
+    },
+
+    // Specify the method
+    method: 'POST',
+
+    // A JSON payload
+    body: JSON.stringify({
+        "email": email,"password": password
+    })
+}).then(function (response) { // At this point, Flask has printed our JSON
+  return response.text();
+}).then(function (text) {
+
+    console.log('POST response: ');
+    // Should be 'OK' if everything was successful
+   // console.log(text);
+   let logindata =   JSON.parse(text);
+   console.log("JSON login data: ", logindata);  
+});
+      };
+     
+   </script>
+
+</html>
