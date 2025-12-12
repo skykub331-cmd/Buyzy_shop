@@ -1,6 +1,8 @@
 import os 
 import shutil 
 import uvicorn 
+import json
+from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -24,79 +26,20 @@ async def home(request: Request):
     return templates.TemplateResponse("buyzy.html", {"request": request})
 @app.get("/signin",response_class=HTMLResponse)
 async def signinpage(request: Request):
-     return templates.TemplateResponse("signin.html",{"request":request}) 
+     return templates.TemplateResponse("signin.html",{"request":request})
+@app.get("/profile/{account}",response_class=HTMLResponse)
+async def profile_page(request: Request,account:str):
+     return templates.TemplateResponse("profile_page.html",{"request":request,"account_data":account})  
 @app.get("/signup",response_class=HTMLResponse)
 async def signuppage(request: Request):
      return templates.TemplateResponse("signup.html",{"request":request}) 
 @app.post("/database")
 async def database_endpoint(request: Request):
      reqdat = await request.json()
-     productJsonData = {
-            "title": "สินค้าอิเล็กทรอนิกส์ทั้งหมด",
-            "products": [
-                {
-                    "id": 101,
-                    "name": "หูฟังไร้สายสุดพรีเมียม Buyzy ProX-10",
-                    "price": 3590,
-                    "original_price": 4990,
-                    "discount_percent": 28,
-                    "popularity_rating": 4.8,
-                    "stock_quantity": 50,
-                    "image_url": "static/headphone.png"
-                },
-                {
-                    "id": 102,
-                    "name": "Smart Watch",
-                    "price": 499,
-                    "original_price": 599,
-                    "discount_percent": 17,
-                    "popularity_rating": 4.5,
-                    "stock_quantity": 120,
-                    "image_url": "static/smart_watch.png"
-                },
-                {
-                    "id": 103,
-                    "name": "สมาร์ทโฟนรุ่นใหม่ล่าสุด Buyzy X-Series (สีส้ม/ดำ)",
-                    "price": 19999,
-                    "original_price": 22999,
-                    "discount_percent": 13,
-                    "popularity_rating": 4.9,
-                    "stock_quantity": 15,
-                    "image_url": "static/Smart_phone.png"
-                },
-                {
-                    "id": 104,
-                    "name": "สายชาร์จเร็ว Type-C ทนทานพิเศษ (สีส้ม Buyzy)",
-                    "price": 199,
-                    "original_price": 350,
-                    "discount_percent": 43,
-                    "popularity_rating": 4.2,
-                    "stock_quantity": 300,
-                    "image_url": "static/Charger_cable_orange.png"
-                },
-                 {
-                    "id": 105,
-                    "name": "Gaming Mousepad",
-                    "price": 499,
-                    "original_price": 6999,
-                    "discount_percent": 17,
-                    "popularity_rating": 4.5,
-                    "stock_quantity": 130,
-                    "image_url": "static/Gaming_mousepad.png"
-                },
-                {
-                    "id": 106,
-                    "name": "Smart Switch",
-                    "price": 599,
-                    "original_price": 7999,
-                    "discount_percent": 18,
-                    "popularity_rating": 4.5,
-                    "stock_quantity": 140,
-                    "image_url": "static/smart_switch.png"
-                }
-
-            ]
-     }
+     prod_file_path = Path("C:/Users/USER/AppData/Local/Programs/Python/Python38/static/product_database.json")
+     # Open the file and load JSON
+     prod_db = prod_file_path.open('r', encoding='utf-8')
+     productJsonData = json.loads(prod_db.read())
      return productJsonData
 @app.post("/update_realdb")
 async def updaterealdb(request: Request):
